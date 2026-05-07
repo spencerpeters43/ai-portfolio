@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block title %}Contact | Spencer Peters{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div class="container">
+        <h1 class="page-header-title">Contact Me</h1>
+        <p class="page-header-subtitle">Have a question or want to connect? Send me a message.</p>
+    </div>
+</div>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+
+                <div class="contact-card">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label for="{{ form.name.id_for_label }}" class="form-label fw-medium">
+                                Name <span class="text-danger">*</span>
+                            </label>
+                            {{ form.name }}
+                            {% if form.name.errors %}
+                            <div class="form-error mt-1">
+                                {% for error in form.name.errors %}{{ error }}{% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.email.id_for_label }}" class="form-label fw-medium">
+                                Email <span class="text-danger">*</span>
+                            </label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                            <div class="form-error mt-1">
+                                {% for error in form.email.errors %}{{ error }}{% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.subject.id_for_label }}" class="form-label fw-medium">
+                                Subject <span class="text-danger">*</span>
+                            </label>
+                            {{ form.subject }}
+                            {% if form.subject.errors %}
+                            <div class="form-error mt-1">
+                                {% for error in form.subject.errors %}{{ error }}{% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.message.id_for_label }}" class="form-label fw-medium">
+                                Message <span class="text-danger">*</span>
+                            </label>
+                            {{ form.message }}
+                            {% if form.message.errors %}
+                            <div class="form-error mt-1">
+                                {% for error in form.message.errors %}{{ error }}{% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="bi bi-send me-2"></i>Send Message
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- Side info -->
+            <div class="col-lg-4 offset-lg-1 mt-5 mt-lg-0">
+                <div class="contact-info">
+                    <h5 class="fw-semibold mb-4">Other Ways to Connect</h5>
+
+                    <div class="contact-info-item">
+                        <i class="bi bi-github"></i>
+                        <div>
+                            <strong>GitHub</strong>
+                            <!-- TODO: replace with your URL -->
+                            <a href="https://github.com/spencerpeters43" target="_blank" rel="noopener noreferrer"
+                               class="d-block text-muted">github.com/spencerpeters43</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <i class="bi bi-linkedin"></i>
+                        <div>
+                            <strong>LinkedIn</strong>
+                            <!-- TODO: replace with your URL -->
+                            <a href="https://www.linkedin.com/in/spencer-s-peters1" target="_blank" rel="noopener noreferrer"
+                               class="d-block text-muted">linkedin.com/in/spencer-s-peters1</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <i class="bi bi-file-earmark-person"></i>
+                        <div>
+                            <strong>Resume</strong>
+                            <a href="{% url 'resume' %}" class="d-block text-muted">View / Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

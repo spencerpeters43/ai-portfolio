@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% block title %}{{ project.title }} | Spencer Peters{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div class="container">
+        <a href="{% url 'projects' %}" class="btn btn-outline-light btn-sm mb-3">
+            <i class="bi bi-arrow-left me-1"></i>All Projects
+        </a>
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+            <span class="badge badge-type-lg">{{ project.get_project_type_display }}</span>
+            {% if project.is_featured %}
+            <span class="badge bg-warning text-dark">Featured</span>
+            {% endif %}
+        </div>
+        <h1 class="page-header-title">{{ project.title }}</h1>
+        <p class="page-header-subtitle">{{ project.summary }}</p>
+    </div>
+</div>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row g-5">
+
+            <!-- ===== LEFT: MEDIA + LINKS ===== -->
+            <div class="col-lg-5">
+
+                <!-- Media: priority order — uploaded video > video_url embed > screenshot -->
+                {% if project.video %}
+                <div class="mb-4">
+                    <video class="w-100 rounded shadow" controls>
+                        <source src="{{ project.video.url }}">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+
+                {% elif project.video_url %}
+                <div class="ratio ratio-16x9 mb-4 rounded overflow-hidden shadow">
+                    <iframe src="{{ project.video_url }}"
+                            title="{{ project.title }} demo"
+                            allowfullscreen
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+                    </iframe>
+                </div>
+
+                {% elif project.screenshot %}
+                <div class="mb-4">
+                    <img src="{{ project.screenshot.url }}"
+                         class="img-fluid rounded shadow"
+                         alt="{{ project.title }} screenshot">
+                </div>
+
+                {% else %}
+                <div class="detail-media-placeholder d-flex align-items-center justify-content-center mb-4 rounded">
+                    {% if project.project_type == 'chatbot' %}<i class="bi bi-chat-dots"></i>
+                    {% elif project.project_type == 'workflow' %}<i class="bi bi-diagram-3"></i>
+                    {% elif project.project_type == 'video' %}<i class="bi bi-play-circle"></i>
+                    {% elif project.project_type == 'web_app' %}<i class="bi bi-globe"></i>
+                    {% else %}<i class="bi bi-code-slash"></i>{% endif %}
+                </div>
+                {% endif %}
+
+                <!-- Tools Used -->
+                <div class="detail-card mb-3">
+                    <h6 class="detail-card-title"><i class="bi bi-tools me-2"></i>Tools Used</h6>
+                    <ul class="list-unstyled mb-0">
+                        {% for tool in project.tools_list %}
+                        <li class="tool-badge">{{ tool }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Optional Links -->
+                {% if project.github_link or project.live_demo_link or project.downloadable_file %}
+                <div class="detail-card">
+                    <h6 class="detail-card-title"><i class="bi bi-link-45deg me-2"></i>Links & Downloads</h6>
+                    <div class="d-grid gap-2">
+                        {% if project.github_link %}
+                        <a href="{{ project.github_link }}" class="btn btn-outline-dark"
+                           target="_blank" rel="noopener noreferrer">
+                            <i class="bi bi-github me-2"></i>View on GitHub
+                        </a>
+                        {% endif %}
+                        {% if project.live_demo_link %}
+                        <a href="{{ project.live_demo_link }}" class="btn btn-outline-success"
+                           target="_blank" rel="noopener noreferrer">
+                            <i class="bi bi-box-arrow-up-right me-2"></i>Live Demo
+                        </a>
+                        {% endif %}
+                        {% if project.downloadable_file %}
+                        <a href="{{ project.downloadable_file.url }}" class="btn btn-outline-primary"
+                           download>
+                            <i class="bi bi-download me-2"></i>Download File
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+
+            <!-- ===== RIGHT: DETAIL SECTIONS ===== -->
+            <div class="col-lg-7">
+
+                <div class="detail-section">
+                    <h4 class="detail-section-title">
+                        <i class="bi bi-briefcase me-2"></i>Business Problem
+                    </h4>
+                    <p>{{ project.business_problem }}</p>
+                </div>
+
+                <div class="detail-section">
+                    <h4 class="detail-section-title">
+                        <i class="bi bi-stars me-2"></i>Key Features
+                    </h4>
+                    <ul class="feature-list">
+                        {% for feature in project.features_list %}
+                        <li>{{ feature }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="detail-section">
+                    <h4 class="detail-section-title">
+                        <i class="bi bi-person-check me-2"></i>My Role / Contribution
+                    </h4>
+                    <p>{{ project.my_role }}</p>
+                </div>
+
+                <div class="detail-section">
+                    <h4 class="detail-section-title">
+                        <i class="bi bi-exclamation-triangle me-2"></i>Biggest Challenge
+                    </h4>
+                    <p>{{ project.biggest_challenge }}</p>
+                </div>
+
+                <div class="detail-section">
+                    <h4 class="detail-section-title">
+                        <i class="bi bi-lightbulb me-2"></i>What I Learned
+                    </h4>
+                    <p>{{ project.what_i_learned }}</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Back link -->
+        <div class="mt-5 pt-3 border-top">
+            <a href="{% url 'projects' %}" class="btn btn-outline-primary">
+                <i class="bi bi-arrow-left me-1"></i>Back to All Projects
+            </a>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,548 @@
+{
+  "name": "Agent - Orchestrator (Midterm)",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "54ae5e84-a30d-4f72-b7ab-93e44c8040e5",
+              "name": "job",
+              "value": "={{ $json }}",
+              "type": "object"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        0
+      ],
+      "id": "34e881d6-1e40-42d5-bb65-bc1d89afcef9",
+      "name": "Store Job"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://spencerpeters43.app.n8n.cloud/webhook/agent-intake",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $json.message }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "7bf156e9-2baf-4d38-8091-2c9e38da5c76",
+      "name": "Call Intake Agent"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://spencerpeters43.app.n8n.cloud/webhook/agent-pricing",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "service",
+              "value": "={{ $json.service }}"
+            },
+            {
+              "name": "zip",
+              "value": "={{ $json.zip }}"
+            },
+            {
+              "name": "urgency",
+              "value": "={{ $json.urgency }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        624,
+        0
+      ],
+      "id": "891d3c73-524c-41b6-8bb0-2ce93cd5eca9",
+      "name": "Call Pricing Agent"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4e780559-bcc5-492f-86cf-1c8585606ccb",
+              "name": "pricing",
+              "value": "={{ $json }}",
+              "type": "object"
+            },
+            {
+              "id": "43b820d3-9772-47b8-85db-d14f7c7f3c65",
+              "name": "job",
+              "value": "={{ $node[\"Store Job\"].json.job }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        832,
+        0
+      ],
+      "id": "90fddcfa-8bc6-4f95-b683-896455460fe9",
+      "name": "Store Pricing"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://spencerpeters43.app.n8n.cloud/webhook/agent-scheduling",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "preferred_days",
+              "value": "={{ $json.job.preferred_days }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        0,
+        240
+      ],
+      "id": "584723da-b2a6-4b58-83f9-eed63da8689b",
+      "name": "Call Scheduling Agent"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f686af45-ca4a-40f8-aef9-156da73cce31",
+              "name": "first_name",
+              "value": "={{ $node[\"Form Input\"].json.first_name }}",
+              "type": "string"
+            },
+            {
+              "id": "59708331-466f-41aa-b451-d691fdadb0c2",
+              "name": "scheduling",
+              "value": "={{ $json }}",
+              "type": "object"
+            },
+            {
+              "id": "6ef3a282-d132-4873-91f4-278f931646ae",
+              "name": "job",
+              "value": "={{ $node[\"Store Job\"].json.job }}",
+              "type": "object"
+            },
+            {
+              "id": "d93af461-ee2f-41b5-b00e-868eb3cb9d6c",
+              "name": "pricing",
+              "value": "={{ $node[\"Store Pricing\"].json.pricing }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        240
+      ],
+      "id": "42d2cad5-d277-4e91-888b-fab7fcca2f37",
+      "name": "Store Scheduling"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://spencerpeters43.app.n8n.cloud/webhook/agent-comms2",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "=application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "job",
+              "value": "={{ $json.job }}"
+            },
+            {
+              "name": "pricing",
+              "value": "={{ $json.pricing }}"
+            },
+            {
+              "name": "scheduling",
+              "value": "={{ $json.scheduling }}"
+            },
+            {
+              "name": "first_name",
+              "value": "={{ $json.first_name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        416,
+        240
+      ],
+      "id": "be2668ec-d603-44f3-8708-f97e3910c9a0",
+      "name": "Call Comms Agent"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "19444a35-b385-4919-8414-c89cad51e908",
+              "name": "comms",
+              "value": "={{ $json }}",
+              "type": "object"
+            },
+            {
+              "id": "8435f7e5-abdf-436c-bf1a-e7081acc89ab",
+              "name": "job",
+              "value": "={{ $node[\"Store Job\"].json.job }}",
+              "type": "object"
+            },
+            {
+              "id": "737dbfbe-fe27-49b6-8993-0e044c3e6f44",
+              "name": "pricing",
+              "value": "={{ $node[\"Store Pricing\"].json.pricing }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        240
+      ],
+      "id": "31ccadeb-38d4-4366-bea4-5c1bb111e4aa",
+      "name": "Store Comms"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1pOma7-Agv8rIQT29nybPmwg7KTwUAvCTFyluiS4bo_c",
+          "mode": "list",
+          "cachedResultName": "Spencer's Handyman Services",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1pOma7-Agv8rIQT29nybPmwg7KTwUAvCTFyluiS4bo_c/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1508399668,
+          "mode": "list",
+          "cachedResultName": "Form Responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1pOma7-Agv8rIQT29nybPmwg7KTwUAvCTFyluiS4bo_c/edit#gid=1508399668"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        0
+      ],
+      "id": "0b6f9361-b84b-4ac6-ac6b-7527417c7102",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "HPXMoDDuMjKLIWak",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "98d79bca-3006-4721-a20f-2c477e27cafe",
+              "name": "name",
+              "value": "={{ $json[\"Your Name\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "379872b1-f851-4dc0-a8d4-8d5bfc339db4",
+              "name": "first_name",
+              "value": "={{ $json[\"Your Name\"].split(\" \")[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "61f11d45-6bf8-4be1-b66b-aca5dec60a74",
+              "name": "=email",
+              "value": "={{ $json[\"Your Email Address\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "b7949899-eb3b-4a46-a96e-e15589d64edb",
+              "name": "address",
+              "value": "={{ $json[\"Service Address\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "f808131f-66c6-4c71-8f47-11dee364ec35",
+              "name": "message",
+              "value": "={{ $json[\"Please describe your service need including available dates and times\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2f805e5a-611c-44f8-a2d2-c43d8f2d3c3b",
+      "name": "Form Input"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [items[items.length - 1]];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -208,
+        0
+      ],
+      "id": "9817354b-8052-43bc-a4ab-69d29404c5c9",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $node[\"Form Input\"].json.email }}",
+        "subject": "={{ $json.comms.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.comms.body }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        240
+      ],
+      "id": "5f1e22a7-2207-49b1-a17e-8b0aafdce0e1",
+      "name": "Send a message",
+      "webhookId": "0ccac562-4d6b-4bb5-a7da-70dd787b3f01",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NRUodvZaSK6rry8j",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Store Job": {
+      "main": [
+        [
+          {
+            "node": "Call Pricing Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Intake Agent": {
+      "main": [
+        [
+          {
+            "node": "Store Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Pricing Agent": {
+      "main": [
+        [
+          {
+            "node": "Store Pricing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Pricing": {
+      "main": [
+        [
+          {
+            "node": "Call Scheduling Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Scheduling Agent": {
+      "main": [
+        [
+          {
+            "node": "Store Scheduling",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Scheduling": {
+      "main": [
+        [
+          {
+            "node": "Call Comms Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Comms Agent": {
+      "main": [
+        [
+          {
+            "node": "Store Comms",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Comms": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Form Input": {
+      "main": [
+        [
+          {
+            "node": "Call Intake Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Form Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "3e7875ed-dd61-4c24-9d75-a03c474e43d7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0c8204a52176fd31fc8408d164a1f221f05e8a74d54f19c209c23c5cbdf214b4"
+  },
+  "id": "wPVLH6Gk6p463kyV",
+  "tags": []
+}

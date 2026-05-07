@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Resume | Spencer Peters{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div class="container">
+        <h1 class="page-header-title">Resume</h1>
+        <p class="page-header-subtitle">Download a copy or preview it below.</p>
+    </div>
+</div>
+
+<section class="section-padding">
+    <div class="container">
+
+        <div class="d-flex flex-wrap gap-3 mb-4">
+            <a href="{% url 'resume_pdf' %}" class="btn btn-primary" download="resume.pdf">
+                <i class="bi bi-download me-2"></i>Download PDF
+            </a>
+            <a href="{% url 'resume_pdf' %}" class="btn btn-outline-primary" target="_blank" rel="noopener">
+                <i class="bi bi-box-arrow-up-right me-2"></i>Open in New Tab
+            </a>
+        </div>
+
+        <div class="resume-embed-wrapper shadow rounded overflow-hidden p-3" style="max-width: 632px; margin: 0 auto;">
+            <img src="{% static 'img/resume_screenshot.png' %}" class="img-fluid d-block mx-auto" alt="Spencer Peters Resume" style="max-width: 600px;">
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}About | Spencer Peters{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div class="container">
+        <h1 class="page-header-title">About Me</h1>
+        <p class="page-header-subtitle">Background, interests, and what I've been building.</p>
+    </div>
+</div>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row align-items-center g-5">
+
+            <!-- Photo -->
+            <div class="col-lg-4 text-center">
+                <img src="{% static 'img/profile.jpg' %}" class="profile-photo img-fluid" alt="Spencer Peters">
+                <h4 class="mt-3 fw-semibold">Spencer Peters</h4>
+                <p class="text-muted">MIS · Artificial Intelligence</p>
+            </div>
+
+            <!-- Bio -->
+            <div class="col-lg-8">
+                <h2 class="section-title mb-3">Hi, I'm Spencer.</h2>
+                <p class="fs-5 text-muted mb-3">
+                    <!-- UPDATE: Replace with your own intro sentence -->
+                    I am a Finance and Management Information Systems student at Baylor University with experience
+                    in financial analysis, data analytics, workflow automation, and AI-driven technology projects.
+                    My background combines business and technical skills through work in Excel modeling, Python,
+                    SQL, machine learning, web development, and automation platforms such as n8n. I enjoy applying
+                    analytical thinking and emerging technologies to solve business problems, improve operational
+                    efficiency, and build practical, data-driven solutions.
+                </p>
+
+                <hr class="my-4">
+
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <div class="about-fact">
+                            <i class="bi bi-mortarboard text-primary"></i>
+                            <div>
+                                <strong>Degree</strong>
+                                <!-- UPDATE -->
+                                <p class="mb-0 text-muted">B.S. Finance & Management Information Systems</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="about-fact">
+                            <i class="bi bi-geo-alt text-primary"></i>
+                            <div>
+                                <strong>Location</strong>
+                                <!-- UPDATE -->
+                                <p class="mb-0 text-muted">Frisco, TX</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="about-fact">
+                            <i class="bi bi-cpu text-primary"></i>
+                            <div>
+                                <strong>Focus</strong>
+                                <p class="mb-0 text-muted">Finance, Technology, and AI Solutions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="about-fact">
+                            <i class="bi bi-envelope text-primary"></i>
+                            <div>
+                                <strong>Contact</strong>
+                                <p class="mb-0 text-muted">
+                                    <a href="{% url 'contact' %}">Send a message</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex flex-wrap gap-2">
+                    <a href="{% url 'projects' %}" class="btn btn-primary">
+                        <i class="bi bi-grid me-1"></i>View My Projects
+                    </a>
+                    <a href="{% url 'resume' %}" class="btn btn-outline-primary">
+                        <i class="bi bi-download me-1"></i>Download Resume
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# Django
+db.sqlite3
+*.log
+.env
+local_settings.py
+
+# Render build output
+staticfiles/
+
+# Portfolio assets source folder (files already copied to media/)
+portfolio_assets*
+
+# Large files that exceed GitHub's 100MB limit
+media/downloads/*.zip
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
